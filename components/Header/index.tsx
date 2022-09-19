@@ -9,11 +9,24 @@ import {
   Menu as MenuIcon,
   ExpandMoreOutlined as ArrowBottom,
   NotificationsNoneOutlined as NotificationIcon,
+  AccountCircleOutlined as UserIcon,
 } from "@material-ui/icons";
+
+import { Auth } from "../Auth";
 
 import styles from "./Header.module.scss";
 
 export const Header: React.FC = () => {
+  const [visiblePopup, setVisiblePopup] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setVisiblePopup(true);
+  };
+
+  const handleClose = () => {
+    setVisiblePopup(false);
+  };
+
   return (
     <Paper classes={{ root: styles.root }} elevation={0}>
       <div className="d-flex align-center">
@@ -30,25 +43,33 @@ export const Header: React.FC = () => {
             />
           </a>
         </Link>
-
         <div className={styles.searchBlock}>
           <SearchIcon />
           <input placeholder="Поиск" />
         </div>
-    <Link href="write">
-        <Button variant="contained" className={styles.penButton}>
-          Новая запись
-        </Button>
+        <Link href="write">
+          <Button variant="contained" className={styles.penButton}>
+            Новая запись
+          </Button>
         </Link>
       </div>
       <div className="d-flex align-center">
+        <Auth visible={visiblePopup} setVisible={handleClickOpen} />
+
         <IconButton>
           <MessageIcon />
         </IconButton>
         <IconButton>
           <NotificationIcon />
         </IconButton>
-        <Link href="/profile/1">
+        <div
+          className={styles.loginButton}
+          onClick={() => setVisiblePopup(true)}
+        >
+          <UserIcon />
+          Войти
+        </div>
+        {/* <Link href="/profile/1">
           <a className="d-flex align-center">
             <Avatar
               className={styles.avatar}
@@ -57,7 +78,7 @@ export const Header: React.FC = () => {
             />
             <ArrowBottom />
           </a>
-        </Link>
+        </Link> */}
       </div>
     </Paper>
   );
