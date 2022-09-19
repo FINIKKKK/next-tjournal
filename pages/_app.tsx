@@ -6,7 +6,7 @@ import { Header } from "../components/Header";
 import { theme } from "../theme";
 
 import "macro-css";
-import "../styles/globals.css";
+import "../styles/globals.scss";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

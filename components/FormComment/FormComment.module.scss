@@ -1,0 +1,32 @@
+.box {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  border: 1px solid rgba(#000, 0.03);
+}
+
+.input {
+  &::after,
+  &::before {
+    display: none;
+  }
+  textarea {
+    padding: 5px 10px;
+  }
+}
+
+.btn {
+  display: flex !important;
+  margin-left: auto !important;
+  margin-right: 5px !important;
+  margin-bottom: 5px !important;
+  opacity: 0.5;
+  font-size: 12px !important;
+  transition: 0.2s !important;
+  &:hover {
+    opacity: 1;
+  }
+}

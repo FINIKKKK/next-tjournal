@@ -22,12 +22,13 @@ export const Post: React.FC = () => {
         Пока одни не могли соотнести размеры животного и окружения, другие
         начали создавать апокалиптические сюжеты с котом в главной роли.
       </Typography>
-      <PostActions />
       <Image
-        src="/static/images/logo.svg"
-        height={500}
+        src="https://images.unsplash.com/photo-1543965860-0a2c912bc32f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fG5hdHVyZXxlbnwwfDJ8MHx8&auto=format&fit=crop&w=500&q=60"
+        height={600}
         width={600}
+        objectFit="cover"
       />
+      <PostActions />
     </Paper>
   );
 };
