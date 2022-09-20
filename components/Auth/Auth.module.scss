@@ -1,5 +1,5 @@
 .content {
-  width: 70%;
+  width: 70% !important;
   margin: 30px auto;
 
   button {
@@ -15,10 +15,23 @@
 }
 
 .title {
-  font-size: 18px;
+  font-size: 22px !important;
   color: black !important;
-  margin-bottom: 25px !important;
   font-weight: 500 !important;
+  margin-bottom: 25px !important;
+}
+
+.pretitle {
+  color: black !important;
+  margin-top: -25px !important;
+  margin-bottom: 25px !important;
+  span {
+    color: #4683d9;
+    cursor: pointer;
+    &:hover {
+      color: #d9466b;
+    }
+  }
 }
 
 .miniButtons {
