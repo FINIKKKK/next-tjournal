@@ -27,6 +27,7 @@ export const Post: React.FC = () => {
         height={600}
         width={600}
         objectFit="cover"
+        priority
       />
       <PostActions />
     </Paper>

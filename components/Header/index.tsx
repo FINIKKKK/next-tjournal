@@ -15,9 +15,13 @@ import {
 import { Auth } from "../Auth";
 
 import styles from "./Header.module.scss";
+import { useSelector } from "react-redux";
+import { userSliceSelector } from "../../redux/user/selectors";
 
 export const Header: React.FC = () => {
   const [visiblePopup, setVisiblePopup] = React.useState(false);
+
+  const { data } = useSelector(userSliceSelector);
 
   const handleClickOpen = () => {
     setVisiblePopup(true);
@@ -62,23 +66,26 @@ export const Header: React.FC = () => {
         <IconButton>
           <NotificationIcon />
         </IconButton>
-        <div
-          className={styles.loginButton}
-          onClick={() => setVisiblePopup(true)}
-        >
-          <UserIcon />
-          Войти
-        </div>
-        {/* <Link href="/profile/1">
-          <a className="d-flex align-center">
-            <Avatar
-              className={styles.avatar}
-              alt="Remy Sharp"
-              src="https://leonardo.osnova.io/5ffeac9a-a0e5-5be6-98af-659bfaabd2a6/-/scale_crop/108x108/-/format/webp/"
-            />
-            <ArrowBottom />
-          </a>
-        </Link> */}
+        {data ? (
+          <Link href="/profile/1">
+            <a className="d-flex align-center">
+              <Avatar
+                className={styles.avatar}
+                alt="Remy Sharp"
+                src="https://leonardo.osnova.io/5ffeac9a-a0e5-5be6-98af-659bfaabd2a6/-/scale_crop/108x108/-/format/webp/"
+              />
+              <ArrowBottom />
+            </a>
+          </Link>
+        ) : (
+          <div
+            className={styles.loginButton}
+            onClick={() => setVisiblePopup(true)}
+          >
+            <UserIcon />
+            Войти
+          </div>
+        )}
       </div>
     </Paper>
   );

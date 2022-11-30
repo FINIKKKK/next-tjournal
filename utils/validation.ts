@@ -8,9 +8,9 @@ export const LoginFormScheme = yup.object().shape({
     .required("Обязательное поле"),
 });
 
-export const RegisterFormSchema = yup
+export const RegisterFormScheme = yup
   .object()
   .shape({
-    name: yup.string().required(),
+    fullName: yup.string().required(),
   })
   .concat(LoginFormScheme);

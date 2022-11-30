@@ -21,7 +21,6 @@ export const Auth: React.FC<AuthProps> = ({ visible, setVisible }) => {
   return (
     <Dialog open={visible} onClose={setVisible} maxWidth="xs">
       <DialogContent classes={{ root: styles.content }}>
-        <DialogContentText>
           {formType !== "main" && (
             <ArrowBackIcon
               onClick={() => setFormType("main")}
@@ -37,7 +36,6 @@ export const Auth: React.FC<AuthProps> = ({ visible, setVisible }) => {
           {formType === "register" && (
             <RegisterForm setFormLogin={() => setFormType("login")} />
           )}
-        </DialogContentText>
       </DialogContent>
     </Dialog>
   );

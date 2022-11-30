@@ -5,42 +5,58 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Typography } from "@material-ui/core";
 
 import styles from "../Auth.module.scss";
-import { RegisterFormSchema } from "../../../utils/validation";
+import { RegisterFormScheme } from "../../../utils/validation";
 import { FormField } from "../../FormField";
+import { CreateUserDto } from "../../../utils/api/types";
+import { UserApi } from "../../../utils/api";
+import { setCookie } from "nookies";
+import Alert from "@material-ui/lab/Alert";
 
 type RegisterFormProps = { setFormLogin: () => void };
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ setFormLogin }) => {
+  const [errorMessage, setErrorMessage] = React.useState("");
+
   const form = useForm({
     mode: "onChange",
-    resolver: yupResolver(RegisterFormSchema),
+    resolver: yupResolver(RegisterFormScheme),
   });
 
-  const onSubmit = () => {
-    console.log(form);
+  const onSubmit = async (dto: CreateUserDto) => {
+    try {
+      const data = await UserApi.register(dto);
+      setCookie(null, "token", data.token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+      });
+      setErrorMessage('')
+    } catch (err) {
+      setErrorMessage('err')
+    }
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <Typography classes={{ root: styles.title }}>
-        Зарегистрироваться
-      </Typography>
-      <Typography classes={{ root: styles.pretitle }}>
-        или <span onClick={setFormLogin}>войти</span>
-      </Typography>
-      <FormProvider {...form}>
-        <FormField name="name" label="Имя и Фамилия" />
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Typography classes={{ root: styles.title }}>
+          Зарегистрироваться
+        </Typography>
+        <Typography classes={{ root: styles.pretitle }}>
+          или <span onClick={setFormLogin}>войти</span>
+        </Typography>
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        <FormField name="fullName" label="Имя и Фамилия" />
         <FormField name="email" label="Почта" />
         <FormField name="password" label="Пароль" />
-      </FormProvider>
-      <Button
-        disabled={!form.formState.isValid}
-        type="submit"
-        color="primary"
-        variant="contained"
-      >
-        Зарегистроваться
-      </Button>
-    </form>
+        <Button
+          disabled={!form.formState.isValid || form.formState.isSubmitting}
+          type="submit"
+          color="primary"
+          variant="contained"
+        >
+          Зарегистроваться
+        </Button>
+      </form>
+    </FormProvider>
   );
 };
