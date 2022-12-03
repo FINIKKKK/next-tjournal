@@ -10,16 +10,16 @@ import styles from "./Auth.module.scss";
 
 type AuthProps = {
   visible: boolean;
-  setVisible: () => void;
+  onClose: () => void;
 };
 
-export const Auth: React.FC<AuthProps> = ({ visible, setVisible }) => {
+export const Auth: React.FC<AuthProps> = ({ visible, onClose }) => {
   const [formType, setFormType] = React.useState<"main" | "login" | "register">(
     "main"
   );
 
   return (
-    <Dialog open={visible} onClose={setVisible} maxWidth="xs">
+    <Dialog open={visible} onClose={onClose} maxWidth="xs">
       <DialogContent classes={{ root: styles.content }}>
           {formType !== "main" && (
             <ArrowBackIcon

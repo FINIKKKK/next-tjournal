@@ -58,8 +58,6 @@ export const Header: React.FC = () => {
         </Link>
       </div>
       <div className="d-flex align-center">
-        <Auth visible={visiblePopup} setVisible={handleClickOpen} />
-
         <IconButton>
           <MessageIcon />
         </IconButton>
@@ -87,6 +85,7 @@ export const Header: React.FC = () => {
           </div>
         )}
       </div>
+      <Auth visible={visiblePopup} onClose={handleClose} />
     </Paper>
   );
 };

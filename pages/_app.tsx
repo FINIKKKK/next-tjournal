@@ -8,9 +8,12 @@ import { theme } from "../theme";
 import "macro-css";
 import "../styles/globals.scss";
 import { Provider } from "react-redux";
-import { store } from "../redux/store";
+import { wrapper } from "../redux/store";
+import { FC } from "react";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const App: FC<AppProps> = ({ Component, ...rest }) => {
+  const { store, props } = wrapper.useWrappedStore(rest);
+
   return (
     <>
       <Head>
@@ -22,17 +25,17 @@ function MyApp({ Component, pageProps }: AppProps) {
           href="https://fonts.gstatic.com"
           crossOrigin=""
         />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&display=swap"></link>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&display=swap" />
       </Head>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <Provider store={store}>
           <Header />
-          <Component {...pageProps} />
+          <Component {...props.pageProps} />
         </Provider>
       </MuiThemeProvider>
     </>
   );
-}
+};
 
-export default MyApp;
+export default App;
