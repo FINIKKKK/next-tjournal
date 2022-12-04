@@ -9,11 +9,13 @@ import "macro-css";
 import "../styles/globals.scss";
 import { Provider } from "react-redux";
 import { wrapper } from "../redux/store";
-import { FC } from "react";
+import { Component, FC } from "react";
+import { parseCookies } from "nookies";
+import { UserApi } from "../utils/api/user";
+import { setUserData } from "../redux/user/slice";
+import { Api } from "../utils/api";
 
-const App: FC<AppProps> = ({ Component, ...rest }) => {
-  const { store, props } = wrapper.useWrappedStore(rest);
-
+function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -29,13 +31,34 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
       </Head>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <Provider store={store}>
-          <Header />
-          <Component {...props.pageProps} />
-        </Provider>
+        <Header />
+        <Component {...pageProps} />
       </MuiThemeProvider>
     </>
   );
-};
+}
 
-export default App;
+App.getInitialProps = wrapper.getInitialAppProps(
+  (store) =>
+    async ({ ctx, Component }) => {
+      try {
+        const { token } = parseCookies(ctx);
+        const userData = await Api(ctx).user.getProfile();
+        store.dispatch(setUserData(userData));
+      } catch (err) {
+        if (ctx.asPath === "/write") {
+          ctx?.res?.writeHead(302, { Location: "/403" });
+          ctx?.res?.end();
+        }
+        console.log(err);
+      }
+
+      return {
+        pageProps: Component.getInitialProps
+          ? await Component.getInitialProps({ ...ctx, store })
+          : {},
+      };
+    }
+);
+
+export default wrapper.withRedux(App);

@@ -21,7 +21,7 @@ import { userSliceSelector } from "../../redux/user/selectors";
 export const Header: React.FC = () => {
   const [visiblePopup, setVisiblePopup] = React.useState(false);
 
-  const { data } = useSelector(userSliceSelector);
+  const userData = useSelector(userSliceSelector);
 
   const handleClickOpen = () => {
     setVisiblePopup(true);
@@ -30,6 +30,13 @@ export const Header: React.FC = () => {
   const handleClose = () => {
     setVisiblePopup(false);
   };
+
+
+  React.useEffect(() => {
+    if (visiblePopup && userData) {
+      setVisiblePopup(false);
+    }
+  }, [visiblePopup, userData]);
 
   return (
     <Paper classes={{ root: styles.root }} elevation={0}>
@@ -64,7 +71,7 @@ export const Header: React.FC = () => {
         <IconButton>
           <NotificationIcon />
         </IconButton>
-        {data ? (
+        {userData ? (
           <Link href="/profile/1">
             <a className="d-flex align-center">
               <Avatar

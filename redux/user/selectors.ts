@@ -1,3 +1,3 @@
 import { RootState } from '../store';
 
-export const userSliceSelector = ({ user }: RootState) => user;
+export const userSliceSelector = ({ user }: RootState) => user.data;

@@ -8,12 +8,13 @@ import styles from "../Auth.module.scss";
 import { LoginFormScheme } from "../../../utils/validation";
 import { FormField } from "../../FormField";
 import { LoginDto } from "../../../utils/api/types";
-import { UserApi } from "../../../utils/api";
+import { UserApi } from "../../../utils/api/user";
 import { setCookie } from "nookies";
 import { Alert } from "@material-ui/lab";
 import { userSliceSelector } from "../../../redux/user/selectors";
 import { setUserData } from "../../../redux/user/slice";
 import { useDispatch } from "react-redux";
+import { Api } from "../../../utils/api";
 
 type LoginFormProps = {
   setFormRegister: () => void;
@@ -30,12 +31,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ setFormRegister }) => {
 
   const onSubmit = async (dto: LoginDto) => {
     try {
-      const data = await UserApi.login(dto);
-      setCookie(null, "token", data.token, {
+      const data = await Api().user.login(dto);
+      setCookie(null, "rtoken", data.token, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
-      dispatch(setUserData(data))
+      dispatch(setUserData(data));
       setErrorMessage("");
     } catch (err) {
       setErrorMessage("err");
