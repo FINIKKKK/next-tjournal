@@ -1,6 +1,8 @@
 import React from "react";
-import { WriteForm } from "../components/WriteForm";
-import { MainLayout } from "../layouts/MainLayout";
+import { WriteForm } from "../../components/WriteForm";
+import { MainLayout } from "../../layouts/MainLayout";
+
+
 
 const WritePage: React.FC = () => {
   return (
@@ -11,3 +13,4 @@ const WritePage: React.FC = () => {
 };
 
 export default WritePage;
+ 

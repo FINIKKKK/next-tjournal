@@ -28,6 +28,7 @@ export type TPost = {
   title: string;
   body: OutputData["blocks"];
   description: string;
+  author: ResponseUser;
   tags: null | string;
   views: number;
   createAt: string;
