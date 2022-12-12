@@ -16,7 +16,7 @@ const FullPostPage: NextPage<FullPostPageProps> = ({ post }) => {
   return (
     <MainLayout className="mb-50" contentFullWidth>
       <FullPost title={post.title} body={post.body} />
-      <PostCommnets items={comments} />
+      <PostCommnets postId={post.id} />
     </MainLayout>
   );
 };

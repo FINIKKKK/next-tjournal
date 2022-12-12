@@ -3,21 +3,43 @@ import clsx from "clsx";
 import { Input, Button } from "@material-ui/core";
 
 import styles from "./FormComment.module.scss";
+import { Api } from "../../utils/api";
+import { ResponseUser, TComment } from "../../utils/api/types";
 
-type FormCommentProps = {};
+type FormCommentProps = {
+  postId: number;
+  onAddComment: (obj: TComment) => void;
+};
 
-export const FormComment: React.FC<FormCommentProps> = ({}) => {
+export const FormComment: React.FC<FormCommentProps> = ({
+  postId,
+  onAddComment,
+}) => {
   const [clickedInput, setClickedInput] = React.useState(false);
   const [textInput, setTextInput] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const onSubmitInput = () => {
-    setClickedInput(false);
-    setTextInput("");
+  const onSubmitInput = async () => {
+    try {
+      setIsLoading(true);
+      const comment = await Api().comment.create({
+        postId,
+        text: textInput,
+      });
+      onAddComment(comment);
+      setTextInput("");
+      setClickedInput(false);
+    } catch (err) {
+      console.warn(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className={`${styles.box} ${clickedInput ? "active" : ""}`}>
       <Input
+        disabled={isLoading}
         onChange={(e) => setTextInput(e.target.value)}
         value={textInput}
         onClick={() => setClickedInput(true)}
@@ -29,6 +51,7 @@ export const FormComment: React.FC<FormCommentProps> = ({}) => {
       />
       {clickedInput && (
         <Button
+          disabled={isLoading}
           onClick={onSubmitInput}
           classes={{ root: styles.btn }}
           variant="contained"

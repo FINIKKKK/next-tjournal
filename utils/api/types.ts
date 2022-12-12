@@ -16,6 +16,7 @@ export type ResponseUser = {
   id: number;
   token: string;
   updateAt: string;
+  commentCount: number;
 };
 
 export type CreatePostDto = {
@@ -33,4 +34,27 @@ export type TPost = {
   views: number;
   createAt: string;
   updateAt: string;
+};
+
+export type CreateCommentDto = {
+  postId: number;
+  text: string;
+};
+
+export type TComment = {
+  id: number;
+  text: string;
+  post: TPost;
+  user: ResponseUser;
+  createAt: string;
+  updateAt: string;
+};
+
+export type SearchPostDto = {
+  title?: string;
+  body?: string;
+  tag?: string;
+  views?: "DESC" | "ASC";
+  limit?: number;
+  take?: number;
 };

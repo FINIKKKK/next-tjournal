@@ -1,19 +1,14 @@
+import { Avatar } from "@material-ui/core";
 import Link from "next/link";
 import React from "react";
+import { ResponseUser, TPost } from "../../utils/api/types";
 
 import styles from "./SideComments.module.scss";
 
 interface CommentItemProps {
-  user: {
-    id: number;
-    fullName: string;
-    avatarUrl: string;
-  };
+  user: ResponseUser;
   text: string;
-  post: {
-    id: number;
-    title: string;
-  };
+  post: TPost;
 }
 
 export const CommentItem: React.FC<CommentItemProps> = ({
@@ -26,7 +21,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
       <div className={styles.userInfo}>
         <Link href={`/profile/${[user.id]}`}>
           <a>
-            <img src={user.avatarUrl} alt="avatar" />
+            <Avatar>{user.fullName[0]}</Avatar>
             <b>{user.fullName}</b>
           </a>
         </Link>

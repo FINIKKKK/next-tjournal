@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import { Paper, Button, IconButton, Avatar } from "@material-ui/core";
+import { Paper, Button, IconButton, Avatar, ListItem, List } from "@material-ui/core";
 import {
   SearchOutlined as SearchIcon,
   CreateOutlined as PenIcon,
@@ -17,9 +17,15 @@ import { Auth } from "../Auth";
 import styles from "./Header.module.scss";
 import { useSelector } from "react-redux";
 import { userSliceSelector } from "../../redux/user/selectors";
+import { TPost } from "../../utils/api/types";
+import { Api } from "../../utils/api";
+
+export type HeaderProps = {};
 
 export const Header: React.FC = () => {
   const [visiblePopup, setVisiblePopup] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [posts, setPosts] = React.useState<TPost[]>([]);
 
   const userData = useSelector(userSliceSelector);
 
@@ -31,12 +37,22 @@ export const Header: React.FC = () => {
     setVisiblePopup(false);
   };
 
-
   React.useEffect(() => {
     if (visiblePopup && userData) {
       setVisiblePopup(false);
     }
   }, [visiblePopup, userData]);
+
+  const handleChangeInput = async (e: any) => {
+    setSearchValue(e.target.value);
+    try {
+      const { items } = await Api().post.search({ title: e.target.value });
+      console.log(items);
+      setPosts(items);
+    } catch (e) {
+      console.warn(e);
+    }
+  };
 
   return (
     <Paper classes={{ root: styles.root }} elevation={0}>
@@ -56,7 +72,24 @@ export const Header: React.FC = () => {
         </Link>
         <div className={styles.searchBlock}>
           <SearchIcon />
-          <input placeholder="Поиск" />
+          <input
+            value={searchValue}
+            onChange={handleChangeInput}
+            placeholder="Поиск"
+          />
+          {posts.length > 0 && (
+            <Paper className={styles.searchBlockPopup}>
+              <List>
+                {posts.map((obj) => (
+                  <Link key={obj.id} href={`/news/${obj.id}`}>
+                    <a>
+                      <ListItem button>{obj.title}</ListItem>
+                    </a>
+                  </Link>
+                ))}
+              </List>
+            </Paper>
+          )}
         </div>
         <Link href="write">
           <Button variant="contained" className={styles.penButton}>
